@@ -128,4 +128,4 @@ Contributions are welcome! To contribute:
 ---
 
 ## Thanks for using PronounsPlugin
-[Modrinth](https://modrinth.com/plugin/pronounsplugin), [Paper Hangar](https://hangar.papermc.io/Alfie51m/PronounsPlugin), [SpigotMC](https://www.spigotmc.org/resources/pronounsplugin.122068/)
+You can also find this plugin on [Modrinth](https://modrinth.com/plugin/pronounsplugin), [Paper Hangar](https://hangar.papermc.io/Alfie51m/PronounsPlugin), [SpigotMC](https://www.spigotmc.org/resources/pronounsplugin.122068/)
