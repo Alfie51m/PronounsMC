@@ -34,6 +34,8 @@
 
 ### `config.yml`
 
+Colour formatting can be used in pronouns as shown below, this is optional.
+
 ```yaml
 langFile: "en_US"
 
