@@ -1,6 +1,6 @@
 # PronounsPlugin
 
-**PronounsPlugin** is a Minecraft server plugin that allows players to set and display their pronouns. It supports multiple database types (**MySQL** and **SQLite**) and provides customizable messages via language files.
+**PronounsPlugin** is a Minecraft Spigot plugin that allows players to set and display their pronouns. It supports multiple database types (**MySQL** and **SQLite**) and provides customizable messages via language files.
 
 ## Notes
 
