@@ -6,8 +6,8 @@ database:
   password: password
 
 availablePronouns:
-  he/him: true
-  she/her: true
-  they/them: true
-  xe/xem: true
-  ze/zir: true
+  he/him: "&bHe&3/&bHim&r"
+  she/her: "&dShe&5/&dHer&r"
+  they/them: "&eThey&6/&eThem&r"
+  xe/xem: "&bXe&3/&bXem&r"
+  ze/zir: "&eZe&3/&eZir&r"
