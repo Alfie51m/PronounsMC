@@ -1,0 +1,13 @@
+database:
+  host: localhost
+  port: 3306
+  name: minecraft
+  user: root
+  password: password
+
+availablePronouns:
+  he/him: true
+  she/her: true
+  they/them: true
+  xe/xem: true
+  ze/zir: true

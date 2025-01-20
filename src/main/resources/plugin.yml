@@ -1,0 +1,12 @@
+name: PronounsPlugin
+version: 1.0.0
+main: com.alfie51m.pronounsPlugin.PronounsPlugin
+api-version: 1.21
+commands:
+  pronouns:
+    description: Manage your pronouns.
+    usage: /pronouns <get|list|pronoun>
+permissions:
+  pronouns.get:
+    description: Allows the use of /pronouns get <username>.
+    default: op
