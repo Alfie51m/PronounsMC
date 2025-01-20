@@ -4,9 +4,14 @@ main: com.alfie51m.pronounsPlugin.PronounsPlugin
 api-version: 1.21
 commands:
   pronouns:
-    description: Manage your pronouns.
-    usage: /pronouns <get|list|pronoun>
+    description: Main command for pronouns
+    usage: /pronouns <command>
+    aliases: [pronoun]
+
 permissions:
   pronouns.get:
-    description: Allows the use of /pronouns get <username>.
+    description: Permission to get another player's pronouns
+    default: op
+  pronouns.reload:
+    description: Permission to reload the plugin config
     default: op

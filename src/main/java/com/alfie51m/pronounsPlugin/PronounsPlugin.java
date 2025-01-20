@@ -63,7 +63,7 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
     private void setupDatabase() throws SQLException {
         String createTableQuery = "CREATE TABLE IF NOT EXISTS pronouns (" +
                 "uuid VARCHAR(36) PRIMARY KEY," +
-                "pronoun VARCHAR(100)" +  // store raw key
+                "pronoun VARCHAR(100)" +
                 ");";
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(createTableQuery);
@@ -82,7 +82,7 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
         String subCommand = args[0].toLowerCase();
 
         switch (subCommand) {
-            case "get":
+            case "get": {
                 // /pronouns get <username>
                 if (args.length < 2) {
                     sender.sendMessage(ChatColor.RED + "Usage: /pronouns get <username>");
@@ -92,46 +92,55 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
                     sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
                     return true;
                 }
-
                 Player target = Bukkit.getPlayer(args[1]);
                 if (target == null) {
                     sender.sendMessage(ChatColor.RED + "Player not found!");
                     return true;
                 }
-
-                String storedKey = getPronouns(target.getUniqueId().toString()); // e.g. "he/him"
+                String storedKey = getPronouns(target.getUniqueId().toString());
                 if (storedKey == null) {
                     sender.sendMessage(ChatColor.GREEN + target.getName() + "'s pronouns: "
                             + ChatColor.AQUA + "Not set");
                 } else {
-                    // Convert raw key -> color from config
                     String colorized = getColoredPronoun(storedKey);
                     sender.sendMessage(ChatColor.GREEN + target.getName() + "'s pronouns: "
                             + ChatColor.RESET + colorized);
                 }
-                break;
+                return true;
+            }
 
-            case "list":
+            case "list": {
                 // /pronouns list
                 Set<String> availablePronouns = config.getConfigurationSection("availablePronouns").getKeys(false);
                 sender.sendMessage(ChatColor.GREEN + "Available pronouns:");
                 for (String key : availablePronouns) {
                     String colorized = getColoredPronoun(key);
-                    // show both raw key and color version
-                    sender.sendMessage(ChatColor.AQUA + "- " + key + ChatColor.GRAY + ": "
-                            + ChatColor.RESET + colorized);
+                    sender.sendMessage(ChatColor.AQUA + "- " + key + ChatColor.GRAY + ": " + ChatColor.RESET + colorized);
                 }
-                break;
+                return true;
+            }
 
-            default:
-                // /pronouns <rawKey> -> attempt to set pronouns
+            case "reload": {
+                // /pronouns reload
+                if (!sender.hasPermission("pronouns.reload")) {
+                    sender.sendMessage(ChatColor.RED + "You don't have permission to reload this plugin.");
+                    return true;
+                }
+
+                reloadConfig();
+                config = getConfig();  // Refresh our local reference
+                sender.sendMessage(ChatColor.GREEN + "PronounsPlugin config reloaded.");
+                return true;
+            }
+
+            default: {
+                // /pronouns <somePronounKey>
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can set pronouns.");
                     return true;
                 }
 
-                // e.g., if user types /pronouns he/him
-                String chosenPronoun = subCommand;  // "he/him"
+                String chosenPronoun = subCommand;  // e.g. "he/him"
                 if (!config.contains("availablePronouns." + chosenPronoun)) {
                     sender.sendMessage(ChatColor.RED
                             + "Invalid pronoun. Use /pronouns list to see available options.");
@@ -140,13 +149,12 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
 
                 Player player = (Player) sender;
                 setPronouns(player.getUniqueId().toString(), chosenPronoun);
-
-                // Show them the colorized version
                 String colorized = getColoredPronoun(chosenPronoun);
-                sender.sendMessage(ChatColor.GREEN + "Your pronouns have been set to: " + ChatColor.RESET + colorized);
-                break;
+                sender.sendMessage(ChatColor.GREEN + "Your pronouns have been set to: "
+                        + ChatColor.RESET + colorized);
+                return true;
+            }
         }
-        return true;
     }
 
     @Override
@@ -157,6 +165,11 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
             List<String> subCommands = new ArrayList<>();
             subCommands.add("get");
             subCommands.add("list");
+            // Only show "reload" if the sender has permission (optional)
+            if (sender.hasPermission("pronouns.reload")) {
+                subCommands.add("reload");
+            }
+            // Add the keys from config
             subCommands.addAll(config.getConfigurationSection("availablePronouns").getKeys(false));
             return subCommands;
         } else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
@@ -167,10 +180,6 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
         return null;
     }
 
-    /**
-     * Returns the raw pronoun key from the DB (e.g. "he/him").
-     * @param uuid Player's UUID as String
-     */
     public String getPronouns(String uuid) {
         String query = "SELECT pronoun FROM pronouns WHERE uuid = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -185,9 +194,6 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
         return null;
     }
 
-    /**
-     * Stores the raw pronoun key (e.g. "he/him") in the DB.
-     */
     public void setPronouns(String uuid, String pronoun) {
         String query = "INSERT INTO pronouns (uuid, pronoun) VALUES (?, ?) ON DUPLICATE KEY UPDATE pronoun = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -199,7 +205,6 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
             getLogger().warning("Failed to set pronouns: " + e.getMessage());
         }
     }
-
 
     public String getColoredPronoun(String rawKey) {
         String path = "availablePronouns." + rawKey;
