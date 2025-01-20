@@ -70,79 +70,81 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("pronouns")) {
-            if (args.length == 0) {
-                sender.sendMessage(ChatColor.RED + "Usage: /pronouns <command>");
-                return true;
-            }
+        if (!command.getName().equalsIgnoreCase("pronouns")) return false;
 
-            String subCommand = args[0].toLowerCase();
-            switch (subCommand) {
-                case "get":
-                    if (args.length < 2) {
-                        sender.sendMessage(ChatColor.RED + "Usage: /pronouns get <username>");
-                        return true;
-                    }
-                    if (!sender.hasPermission("pronouns.get")) {
-                        sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
-                        return true;
-                    }
-                    Player target = Bukkit.getPlayer(args[1]);
-                    if (target == null) {
-                        sender.sendMessage(ChatColor.RED + "Player not found!");
-                        return true;
-                    }
-                    String pronouns = getPronouns(target.getUniqueId().toString());
-                    sender.sendMessage(ChatColor.GREEN + target.getName() + "'s pronouns: " + ChatColor.AQUA + (pronouns != null ? pronouns : "Not set"));
-                    break;
-
-                case "list":
-                    Set<String> availablePronouns = config.getConfigurationSection("availablePronouns").getKeys(false);
-                    sender.sendMessage(ChatColor.GREEN + "Available pronouns:");
-                    availablePronouns.forEach(pronoun -> sender.sendMessage(ChatColor.AQUA + "- " + pronoun));
-                    break;
-
-                default:
-                    if (!(sender instanceof Player)) {
-                        sender.sendMessage(ChatColor.RED + "Only players can set pronouns.");
-                        return true;
-                    }
-
-                    String chosenPronoun = args[0].toLowerCase();
-                    if (!config.contains("availablePronouns." + chosenPronoun)) {
-                        sender.sendMessage(ChatColor.RED + "Invalid pronoun. Use /pronouns list to see available options.");
-                        return true;
-                    }
-
-                    Player player = (Player) sender;
-                    setPronouns(player.getUniqueId().toString(), chosenPronoun);
-                    sender.sendMessage(ChatColor.GREEN + "Your pronouns have been set to: " + ChatColor.AQUA + chosenPronoun);
-                    break;
-            }
+        if (args.length == 0) {
+            sender.sendMessage(ChatColor.RED + "Usage: /pronouns <command>");
             return true;
         }
-        return false;
+
+        String subCommand = args[0].toLowerCase();
+        switch (subCommand) {
+            case "get":
+                if (args.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /pronouns get <username>");
+                    return true;
+                }
+                if (!sender.hasPermission("pronouns.get")) {
+                    sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+                    return true;
+                }
+                Player target = Bukkit.getPlayer(args[1]);
+                if (target == null) {
+                    sender.sendMessage(ChatColor.RED + "Player not found!");
+                    return true;
+                }
+                String pronouns = getPronouns(target.getUniqueId().toString());
+                sender.sendMessage(ChatColor.GREEN + target.getName() + "'s pronouns: "
+                        + ChatColor.AQUA + (pronouns != null ? pronouns : "Not set"));
+                break;
+
+            case "list":
+                Set<String> availablePronouns = config.getConfigurationSection("availablePronouns").getKeys(false);
+                sender.sendMessage(ChatColor.GREEN + "Available pronouns:");
+                availablePronouns.forEach(p -> sender.sendMessage(ChatColor.AQUA + "- " + p));
+                break;
+
+            default:
+                // Setting pronouns
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "Only players can set pronouns.");
+                    return true;
+                }
+
+                String chosenPronoun = subCommand;
+                if (!config.contains("availablePronouns." + chosenPronoun)) {
+                    sender.sendMessage(ChatColor.RED + "Invalid pronoun. Use /pronouns list to see available options.");
+                    return true;
+                }
+
+                Player player = (Player) sender;
+                setPronouns(player.getUniqueId().toString(), chosenPronoun);
+                sender.sendMessage(ChatColor.GREEN + "Your pronouns have been set to: "
+                        + ChatColor.AQUA + chosenPronoun);
+                break;
+        }
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (command.getName().equalsIgnoreCase("pronouns")) {
-            if (args.length == 1) {
-                List<String> subCommands = new ArrayList<>();
-                subCommands.add("get");
-                subCommands.add("list");
-                subCommands.addAll(config.getConfigurationSection("availablePronouns").getKeys(false));
-                return subCommands;
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
-                List<String> playerNames = new ArrayList<>();
-                Bukkit.getOnlinePlayers().forEach(player -> playerNames.add(player.getName()));
-                return playerNames;
-            }
+        if (!command.getName().equalsIgnoreCase("pronouns")) return null;
+
+        if (args.length == 1) {
+            List<String> subCommands = new ArrayList<>();
+            subCommands.add("get");
+            subCommands.add("list");
+            subCommands.addAll(config.getConfigurationSection("availablePronouns").getKeys(false));
+            return subCommands;
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
+            List<String> playerNames = new ArrayList<>();
+            Bukkit.getOnlinePlayers().forEach(p -> playerNames.add(p.getName()));
+            return playerNames;
         }
         return null;
     }
 
-    private String getPronouns(String uuid) {
+    public String getPronouns(String uuid) {
         String query = "SELECT pronoun FROM pronouns WHERE uuid = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, uuid);
@@ -156,7 +158,7 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
         return null;
     }
 
-    private void setPronouns(String uuid, String pronoun) {
+    public void setPronouns(String uuid, String pronoun) {
         String query = "INSERT INTO pronouns (uuid, pronoun) VALUES (?, ?) ON DUPLICATE KEY UPDATE pronoun = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, uuid);

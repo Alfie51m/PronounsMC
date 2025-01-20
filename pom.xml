@@ -6,7 +6,7 @@
 
     <groupId>com.alfie51m</groupId>
     <artifactId>PronounsPlugin</artifactId>
-    <version>2.1.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>PronounsPlugin</name>
@@ -59,6 +59,11 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>helpchat-repo-releases</id>
+            <name>HelpChat Maven Repository</name>
+            <url>https://repo.extendedclip.com/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -67,6 +72,11 @@
             <artifactId>spigot-api</artifactId>
             <version>1.21.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.6</version>
         </dependency>
     </dependencies>
 </project>
