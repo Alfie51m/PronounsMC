@@ -6,7 +6,6 @@ commands:
   pronouns:
     description: Main command for pronouns
     usage: /pronouns <command>
-    aliases: [pronoun]
 
 permissions:
   pronouns.get:

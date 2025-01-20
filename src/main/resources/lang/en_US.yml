@@ -1,0 +1,12 @@
+messages:
+  usageMain: "&cUsage: /pronouns <command>"
+  usageGet: "&cUsage: /pronouns get <username>"
+  noPermission: "&cYou don't have permission for that."
+  playerNotFound: "&cPlayer not found!"
+  invalidPronoun: "&cInvalid pronoun. Use /pronouns list to see available options."
+  noPronounsConfigured: "&cNo pronouns configured."
+  pluginReloaded: "&aPronounsPlugin config reloaded."
+  pronounSet: "&aYour pronouns have been set to: &r{pronouns}"
+  availablePronounsHeader: "&aAvailable pronouns:"
+  playerPronounFormat: "&a{player}'s pronouns: &r{pronouns}"
+  onlyPlayers: "&cOnly players can set pronouns."

@@ -2,28 +2,28 @@ package com.alfie51m.pronounsPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.command.TabExecutor;
+import org.bukkit.command.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PronounsPlugin extends JavaPlugin implements TabExecutor {
 
     private Connection connection;
     private FileConfiguration config;
+    private FileConfiguration langConfig;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         config = getConfig();
+
+        loadLangFile();
 
         try {
             connectToDatabase();
@@ -46,36 +46,79 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
             try {
                 connection.close();
             } catch (SQLException e) {
-                getLogger().warning("Failed to close database connection.");
+                getLogger().warning("Failed to close database connection: " + e.getMessage());
             }
         }
     }
 
+    private void loadLangFile() {
+        String langFileName = config.getString("langFile", "en_US");
+        File langFolder = new File(getDataFolder(), "lang");
+        if (!langFolder.exists()) {
+            langFolder.mkdirs();
+        }
+        File langFile = new File(langFolder, langFileName + ".yml");
+
+        if (!langFile.exists()) {
+            saveResource("lang/" + langFileName + ".yml", false);
+        }
+        langConfig = YamlConfiguration.loadConfiguration(langFile);
+    }
+
     private void connectToDatabase() throws SQLException {
-        String url = "jdbc:mysql://" + config.getString("database.host") + ":" + config.getInt("database.port")
-                + "/" + config.getString("database.name");
-        String user = config.getString("database.user");
-        String password = config.getString("database.password");
-        connection = DriverManager.getConnection(url, user, password);
-        getLogger().info("Connected to the database.");
+        String dbType = config.getString("database.type", "mysql").toLowerCase();
+        if (dbType.equals("mysql")) {
+            // MySQL
+            String host = config.getString("database.host", "localhost");
+            int port = config.getInt("database.port", 3306);
+            String dbName = config.getString("database.name", "minecraft");
+            String user = config.getString("database.user", "root");
+            String pass = config.getString("database.password", "");
+
+            String url = "jdbc:mysql://" + host + ":" + port + "/" + dbName;
+            connection = DriverManager.getConnection(url, user, pass);
+            getLogger().info("Connected to MySQL database.");
+        } else {
+            // SQLite
+            File dbFile = new File(getDataFolder(), "pronouns.db");
+            if (!dbFile.getParentFile().exists()) {
+                dbFile.getParentFile().mkdirs();
+            }
+            String url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
+            connection = DriverManager.getConnection(url);
+            getLogger().info("Connected to SQLite database at " + dbFile.getAbsolutePath());
+        }
     }
 
     private void setupDatabase() throws SQLException {
-        String createTableQuery = "CREATE TABLE IF NOT EXISTS pronouns (" +
-                "uuid VARCHAR(36) PRIMARY KEY," +
-                "pronoun VARCHAR(100)" +
-                ");";
+        String dbType = config.getString("database.type", "mysql").toLowerCase();
+        String createTableQuery;
+
+        if (dbType.equals("mysql")) {
+            createTableQuery =
+                    "CREATE TABLE IF NOT EXISTS pronouns (" +
+                            "  uuid VARCHAR(36) PRIMARY KEY," +
+                            "  pronoun VARCHAR(100)" +
+                            ");";
+        } else {
+            createTableQuery =
+                    "CREATE TABLE IF NOT EXISTS pronouns (" +
+                            "  uuid TEXT PRIMARY KEY," +
+                            "  pronoun TEXT" +
+                            ");";
+        }
+
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(createTableQuery);
         }
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!command.getName().equalsIgnoreCase("pronouns")) return false;
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!cmd.getName().equalsIgnoreCase("pronouns")) return false;
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: /pronouns <command>");
+            sender.sendMessage(color(getLang("messages.usageMain", "&cUsage: /pronouns <command>")));
             return true;
         }
 
@@ -83,96 +126,110 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
 
         switch (subCommand) {
             case "get": {
-                // /pronouns get <username>
                 if (args.length < 2) {
-                    sender.sendMessage(ChatColor.RED + "Usage: /pronouns get <username>");
+                    sender.sendMessage(color(getLang("messages.usageGet", "&cUsage: /pronouns get <username>")));
                     return true;
                 }
                 if (!sender.hasPermission("pronouns.get")) {
-                    sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+                    sender.sendMessage(color(getLang("messages.noPermission", "&cYou don't have permission.")));
                     return true;
                 }
+
                 Player target = Bukkit.getPlayer(args[1]);
                 if (target == null) {
-                    sender.sendMessage(ChatColor.RED + "Player not found!");
+                    sender.sendMessage(color(getLang("messages.playerNotFound", "&cPlayer not found!")));
                     return true;
                 }
+
                 String storedKey = getPronouns(target.getUniqueId().toString());
                 if (storedKey == null) {
-                    sender.sendMessage(ChatColor.GREEN + target.getName() + "'s pronouns: "
-                            + ChatColor.AQUA + "Not set");
+                    String notSetMsg = color(getLang("messages.notSet", "&7Not set"));
+                    String format = getLang("messages.playerPronounFormat", "{player}'s pronouns: {pronouns}");
+                    format = format.replace("{player}", target.getName())
+                            .replace("{pronouns}", notSetMsg);
+                    sender.sendMessage(color(format));
                 } else {
                     String colorized = getColoredPronoun(storedKey);
-                    sender.sendMessage(ChatColor.GREEN + target.getName() + "'s pronouns: "
-                            + ChatColor.RESET + colorized);
+                    String format = getLang("messages.playerPronounFormat", "&a{player}'s pronouns: &r{pronouns}");
+                    format = format.replace("{player}", target.getName())
+                            .replace("{pronouns}", colorized);
+                    sender.sendMessage(color(format));
                 }
                 return true;
             }
 
             case "list": {
-                // /pronouns list
-                Set<String> availablePronouns = config.getConfigurationSection("availablePronouns").getKeys(false);
-                sender.sendMessage(ChatColor.GREEN + "Available pronouns:");
-                for (String key : availablePronouns) {
+                if (!config.isConfigurationSection("availablePronouns")) {
+                    sender.sendMessage(color(getLang("messages.noPronounsConfigured", "&cNo pronouns configured.")));
+                    return true;
+                }
+                sender.sendMessage(color(getLang("messages.availablePronounsHeader", "&aAvailable pronouns:")));
+
+                Set<String> keys = config.getConfigurationSection("availablePronouns").getKeys(false);
+                for (String key : keys) {
                     String colorized = getColoredPronoun(key);
-                    sender.sendMessage(ChatColor.AQUA + "- " + key + ChatColor.GRAY + ": " + ChatColor.RESET + colorized);
+                    sender.sendMessage(ChatColor.AQUA + "- " + key + ChatColor.GRAY + ": " + colorized);
                 }
                 return true;
             }
 
             case "reload": {
-                // /pronouns reload
                 if (!sender.hasPermission("pronouns.reload")) {
-                    sender.sendMessage(ChatColor.RED + "You don't have permission to reload this plugin.");
+                    sender.sendMessage(color(getLang("messages.noPermission", "&cYou don't have permission.")));
                     return true;
                 }
 
                 reloadConfig();
-                config = getConfig();  // Refresh our local reference
-                sender.sendMessage(ChatColor.GREEN + "PronounsPlugin config reloaded.");
+                config = getConfig();
+
+                loadLangFile();
+
+                sender.sendMessage(color(getLang("messages.pluginReloaded", "&aPronounsPlugin config reloaded.")));
                 return true;
             }
 
             default: {
-                // /pronouns <somePronounKey>
                 if (!(sender instanceof Player)) {
-                    sender.sendMessage(ChatColor.RED + "Only players can set pronouns.");
+                    sender.sendMessage(color(getLang("messages.onlyPlayers", "&cOnly players can set pronouns.")));
                     return true;
                 }
-
-                String chosenPronoun = subCommand;  // e.g. "he/him"
+                String chosenPronoun = subCommand;
                 if (!config.contains("availablePronouns." + chosenPronoun)) {
-                    sender.sendMessage(ChatColor.RED
-                            + "Invalid pronoun. Use /pronouns list to see available options.");
+                    sender.sendMessage(color(getLang("messages.invalidPronoun",
+                            "&cInvalid pronoun. Use /pronouns list to see available options.")));
                     return true;
                 }
 
                 Player player = (Player) sender;
                 setPronouns(player.getUniqueId().toString(), chosenPronoun);
+
                 String colorized = getColoredPronoun(chosenPronoun);
-                sender.sendMessage(ChatColor.GREEN + "Your pronouns have been set to: "
-                        + ChatColor.RESET + colorized);
+                String msgTemplate = getLang("messages.pronounSet", "&aYour pronouns have been set to: &r{pronouns}");
+                msgTemplate = msgTemplate.replace("{pronouns}", colorized);
+
+                sender.sendMessage(color(msgTemplate));
                 return true;
             }
         }
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (!command.getName().equalsIgnoreCase("pronouns")) return null;
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+        if (!cmd.getName().equalsIgnoreCase("pronouns")) return null;
 
         if (args.length == 1) {
             List<String> subCommands = new ArrayList<>();
             subCommands.add("get");
             subCommands.add("list");
-            // Only show "reload" if the sender has permission (optional)
             if (sender.hasPermission("pronouns.reload")) {
                 subCommands.add("reload");
             }
-            // Add the keys from config
-            subCommands.addAll(config.getConfigurationSection("availablePronouns").getKeys(false));
+            if (config.isConfigurationSection("availablePronouns")) {
+                subCommands.addAll(config.getConfigurationSection("availablePronouns").getKeys(false));
+            }
             return subCommands;
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
+        }
+        else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
             List<String> playerNames = new ArrayList<>();
             Bukkit.getOnlinePlayers().forEach(p -> playerNames.add(p.getName()));
             return playerNames;
@@ -195,23 +252,46 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
     }
 
     public void setPronouns(String uuid, String pronoun) {
-        String query = "INSERT INTO pronouns (uuid, pronoun) VALUES (?, ?) ON DUPLICATE KEY UPDATE pronoun = ?";
+        String dbType = config.getString("database.type", "mysql").toLowerCase();
+
+        String query;
+        if (dbType.equals("mysql")) {
+            // MySQL uses ON DUPLICATE KEY
+            query = "INSERT INTO pronouns (uuid, pronoun) VALUES (?, ?) "
+                    + "ON DUPLICATE KEY UPDATE pronoun = ?";
+        } else {
+            // SQLite uses INSERT OR REPLACE
+            query = "INSERT OR REPLACE INTO pronouns (uuid, pronoun) VALUES (?, ?)";
+        }
+
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, uuid);
             stmt.setString(2, pronoun);
-            stmt.setString(3, pronoun);
+            if (dbType.equals("mysql")) {
+                stmt.setString(3, pronoun);
+            }
             stmt.executeUpdate();
         } catch (SQLException e) {
             getLogger().warning("Failed to set pronouns: " + e.getMessage());
         }
     }
 
+    private String color(String text) {
+        return ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    private String getLang(String path, String def) {
+        if (langConfig == null) {
+            return def;
+        }
+        return langConfig.getString(path, def);
+    }
+
     public String getColoredPronoun(String rawKey) {
         String path = "availablePronouns." + rawKey;
         if (!config.isString(path)) {
-            return ChatColor.RED + "Not set";
+            return color(getLang("messages.notSet", "&7Not set"));
         }
-        String raw = config.getString(path, "&cNot set");
-        return ChatColor.translateAlternateColorCodes('&', raw);
+        return color(config.getString(path, "&7Not set"));
     }
 }
