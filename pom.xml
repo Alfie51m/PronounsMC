@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.alfie51m</groupId>
-    <artifactId>PronounsPlugin</artifactId>
-    <version>1.0.0</version>
+    <artifactId>PronounsMC</artifactId>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
-    <name>PronounsPlugin</name>
+    <name>PronounsMC</name>
 
     <properties>
         <java.version>21</java.version>

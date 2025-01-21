@@ -5,7 +5,7 @@ messages:
   playerNotFound: "&cPlayer not found!"
   invalidPronoun: "&cInvalid pronoun. Use /pronouns list to see available options."
   noPronounsConfigured: "&cNo pronouns configured."
-  pluginReloaded: "&aPronounsPlugin config reloaded."
+  pluginReloaded: "&aPronounsMC config reloaded."
   pronounSet: "&aYour pronouns have been set to: &r{pronouns}"
   availablePronounsHeader: "&aAvailable pronouns:"
   playerPronounFormat: "&a{player}'s pronouns: &r{pronouns}"

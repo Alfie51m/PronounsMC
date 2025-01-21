@@ -1,6 +1,6 @@
-name: PronounsPlugin
-version: 1.0.0
-main: com.alfie51m.pronounsPlugin.PronounsPlugin
+name: PronounsMC
+version: 1.1.0
+main: com.alfie51m.pronounsMC.PronounsMC
 api-version: 1.21
 commands:
   pronouns:

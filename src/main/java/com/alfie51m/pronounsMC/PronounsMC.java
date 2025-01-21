@@ -1,4 +1,4 @@
-package com.alfie51m.pronounsPlugin;
+package com.alfie51m.pronounsMC;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +12,7 @@ import java.io.File;
 import java.sql.*;
 import java.util.*;
 
-public class PronounsPlugin extends JavaPlugin implements TabExecutor {
+public class PronounsMC extends JavaPlugin implements TabExecutor {
 
     private Connection connection;
     private FileConfiguration config;
@@ -184,7 +184,7 @@ public class PronounsPlugin extends JavaPlugin implements TabExecutor {
 
                 loadLangFile();
 
-                sender.sendMessage(color(getLang("messages.pluginReloaded", "&aPronounsPlugin config reloaded.")));
+                sender.sendMessage(color(getLang("messages.pluginReloaded", "&aPronounsMC config reloaded.")));
                 return true;
             }
 
