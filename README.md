@@ -30,6 +30,14 @@
 
 ---
 
+## Placeholders
+
+| Command                | Description                                |
+|------------------------|--------------------------------------------|
+| `%pronouns%`           | Displays users pronouns. Works with PAPI   |
+
+---
+
 ## Configuration
 
 ### `config.yml`
