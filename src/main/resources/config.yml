@@ -6,7 +6,7 @@ database:
   port: 3306
   name: minecraft
   user: root
-  password: password
+  password: "password"
 
 availablePronouns:
   he/him: "&3(&bHe&3/&bHim&3)&r"
