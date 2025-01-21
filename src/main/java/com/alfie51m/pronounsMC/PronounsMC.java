@@ -6,6 +6,7 @@ import org.bukkit.command.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -226,8 +227,10 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
 
         if (args.length == 1) {
             List<String> subCommands = new ArrayList<>();
-            subCommands.add("get");
             subCommands.add("list");
+            if (sender.hasPermission("pronouns.get")) {
+                subCommands.add("get");
+            }
             if (sender.hasPermission("pronouns.reload")) {
                 subCommands.add("reload");
             }
@@ -237,9 +240,16 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
             return subCommands;
         }
         else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
-            List<String> playerNames = new ArrayList<>();
-            Bukkit.getOnlinePlayers().forEach(p -> playerNames.add(p.getName()));
-            return playerNames;
+            String partial = args[1].toLowerCase();
+
+            List<String> completions = new ArrayList<>();
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                String name = onlinePlayer.getName();
+                if (name.toLowerCase().startsWith(partial)) {
+                    completions.add(name);
+                }
+            }
+            return completions;
         }
         return null;
     }
@@ -263,11 +273,9 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
 
         String query;
         if (dbType.equals("mysql")) {
-            // MySQL uses ON DUPLICATE KEY
             query = "INSERT INTO pronouns (uuid, pronoun) VALUES (?, ?) "
                     + "ON DUPLICATE KEY UPDATE pronoun = ?";
         } else {
-            // SQLite uses INSERT OR REPLACE
             query = "INSERT OR REPLACE INTO pronouns (uuid, pronoun) VALUES (?, ?)";
         }
 
