@@ -134,34 +134,45 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
 
         switch (subCommand) {
             case "get": {
+                // /pronouns get <username>
+
                 if (args.length < 2) {
-                    sender.sendMessage(color(getLang("messages.usageGet", "&cUsage: /pronouns get <username>")));
+                    sender.sendMessage(ChatColor.RED + "Usage: /pronouns get <username>");
                     return true;
                 }
                 if (!sender.hasPermission("pronouns.get")) {
-                    sender.sendMessage(color(getLang("messages.noPermission", "&cYou don't have permission.")));
+                    sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
                     return true;
                 }
 
-                Player target = Bukkit.getPlayer(args[1]);
-                if (target == null) {
-                    sender.sendMessage(color(getLang("messages.playerNotFound", "&cPlayer not found!")));
-                    return true;
+                String targetName = args[1];
+                // Check if the player is online
+                Player onlineTarget = Bukkit.getPlayerExact(targetName);
+                UUID targetUUID;
+
+                if (onlineTarget != null) {
+                    // Found the player online
+                    targetUUID = onlineTarget.getUniqueId();
+                } else {
+                    // Try to get offline player data
+                    OfflinePlayer offlineTarget = Bukkit.getOfflinePlayer(targetName);
+                    // If the server doesn't recognize this name at all, or they've never joined
+                    if (offlineTarget == null || !offlineTarget.hasPlayedBefore()) {
+                        sender.sendMessage(ChatColor.RED + "Player not found (offline).");
+                        return true;
+                    }
+                    targetUUID = offlineTarget.getUniqueId();
                 }
 
-                String storedKey = getPronouns(target.getUniqueId().toString());
+                // Now fetch pronouns from DB using targetUUID
+                String storedKey = getPronouns(targetUUID.toString());
                 if (storedKey == null) {
-                    String notSetMsg = color(getLang("messages.notSet", "&7Not set"));
-                    String format = getLang("messages.playerPronounFormat", "{player}'s pronouns: {pronouns}");
-                    format = format.replace("{player}", target.getName())
-                            .replace("{pronouns}", notSetMsg);
-                    sender.sendMessage(color(format));
+                    sender.sendMessage(ChatColor.GREEN + targetName + "'s pronouns: "
+                            + ChatColor.AQUA + "Not set");
                 } else {
                     String colorized = getColoredPronoun(storedKey);
-                    String format = getLang("messages.playerPronounFormat", "&a{player}'s pronouns: &r{pronouns}");
-                    format = format.replace("{player}", target.getName())
-                            .replace("{pronouns}", colorized);
-                    sender.sendMessage(color(format));
+                    sender.sendMessage(ChatColor.GREEN + targetName + "'s pronouns: "
+                            + ChatColor.RESET + colorized);
                 }
                 return true;
             }

@@ -23,9 +23,7 @@ public class PronounsMC_Expansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String getVersion() {
-        return "1.1.0";
-    }
+    public String getVersion() { return "1.1.0"; }
 
     @Override
     public boolean persist() {
