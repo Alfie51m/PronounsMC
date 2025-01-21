@@ -1,6 +1,6 @@
-# PronounsPlugin
+# PronounsMC
 
-**PronounsPlugin** is a Minecraft Spigot plugin that allows players to set and display their pronouns. It supports multiple database types (**MySQL** and **SQLite**) and provides customizable messages via language files.
+**PronounsMC** is a Minecraft Spigot plugin that allows players to set and display their pronouns. It supports multiple database types (**MySQL** and **SQLite**) and provides customizable messages via language files.
 
 ## Notes
 
@@ -78,7 +78,7 @@ messages:
   playerNotFound: "&cPlayer not found!"
   invalidPronoun: "&cInvalid pronoun. Use /pronouns list to see available options."
   noPronounsConfigured: "&cNo pronouns configured."
-  pluginReloaded: "&aPronounsPlugin config reloaded."
+  pluginReloaded: "&aPronounsMC config reloaded."
   pronounSet: "&aYour pronouns have been set to: &r{pronouns}"
   availablePronounsHeader: "&aAvailable pronouns:"
   playerPronounFormat: "&a{player}'s pronouns: &r{pronouns}"
@@ -135,5 +135,5 @@ Contributions are welcome! To contribute:
 
 ---
 
-## Thanks for using PronounsPlugin
-You can also find this plugin on [Modrinth](https://modrinth.com/plugin/pronounsplugin), [Paper Hangar](https://hangar.papermc.io/Alfie51m/PronounsPlugin), [SpigotMC](https://www.spigotmc.org/resources/pronounsplugin.122068/)
+## Thanks for using PronounsMC
+You can also find this plugin on [Modrinth](https://modrinth.com/plugin/PronounsMC), [Paper Hangar](https://hangar.papermc.io/Alfie51m/PronounsMC), [SpigotMC](https://www.spigotmc.org/resources/PronounsMC.122068/)
