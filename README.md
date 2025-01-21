@@ -4,7 +4,7 @@
 
 ## Notes
 
-- PlaceholderAPI and our expansion is required for use in other plugins like a chat plugin.
+- PlaceholderAPI is required for placeholders.
 - We reccomend using a plugin like [ChatInjector](https://www.spigotmc.org/resources/chatinjector-1-13.81201/) for use with plugins that **don't** support PlaceholderAPI like EssentialsX Chat.
 
 ## Features
@@ -20,7 +20,6 @@
 ## Installation
 
 1. **Download** the plugin jar file and place it in your server's `plugins/` folder.
-2. **Download** the PlaceholderAPI expansion and place in `plugins/PlaceholderAPI/expansions/` (Optional)
 2. **Start your server** to generate the default configuration files.
 3. **Edit `config.yml`** to configure:
     - **Database type**: Choose between `mysql` or `sqlite`.
