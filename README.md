@@ -32,7 +32,7 @@
 
 ## Placeholders
 
-| Command                | Description                                |
+| Placeholder            | Description                                |
 |------------------------|--------------------------------------------|
 | `%pronouns%`           | Displays users pronouns. Works with PAPI   |
 
