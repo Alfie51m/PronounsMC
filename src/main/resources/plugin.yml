@@ -2,6 +2,7 @@ name: PronounsMC
 version: 1.1.0
 main: com.alfie51m.pronounsMC.PronounsMC
 api-version: 1.21
+softdepend: [PlaceholderAPI]
 commands:
   pronouns:
     description: Main command for pronouns
@@ -9,8 +10,8 @@ commands:
 
 permissions:
   pronouns.get:
-    description: Permission to get another player's pronouns
+    description: Permission to get another player's pronouns.
     default: op
   pronouns.reload:
-    description: Permission to reload the plugin config
+    description: Permission to reload the plugin config.
     default: op

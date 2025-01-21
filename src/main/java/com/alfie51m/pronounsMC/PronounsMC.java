@@ -38,6 +38,13 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
             getCommand("pronouns").setExecutor(this);
             getCommand("pronouns").setTabCompleter(this);
         }
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            Bukkit.getScheduler().runTask(this, () -> {
+                new PronounsMC_Expansion(this).register();
+            });
+        } else {
+            getLogger().warning("PlaceholderAPI is not installed! Placeholders won't be available.");
+        }
     }
 
     @Override
