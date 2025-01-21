@@ -33,7 +33,7 @@
 
 | Placeholder            | Description                                |
 |------------------------|--------------------------------------------|
-| `%pronouns%`           | Displays users pronouns. Works with PAPI   |
+| `%pronouns%`           | Displays users pronouns. Works with PlaceholderAPI   |
 
 ---
 
