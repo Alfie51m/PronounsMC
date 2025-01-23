@@ -71,17 +71,18 @@ All user-facing messages are customizable in the language file. Example:
 
 ```yaml
 messages:
-  usageMain: "&cUsage: /pronouns <command>"
-  usageGet: "&cUsage: /pronouns get <username>"
-  noPermission: "&cYou don't have permission for that."
-  playerNotFound: "&cPlayer not found!"
-  invalidPronoun: "&cInvalid pronoun. Use /pronouns list to see available options."
-  noPronounsConfigured: "&cNo pronouns configured."
-  pluginReloaded: "&aPronounsMC config reloaded."
-  pronounSet: "&aYour pronouns have been set to: &r{pronouns}"
-  availablePronounsHeader: "&aAvailable pronouns:"
-  playerPronounFormat: "&a{player}'s pronouns: &r{pronouns}"
-  onlyPlayers: "&cOnly players can set pronouns."
+   usageMain: "&cUsage: /pronouns <command>"
+   usageGet: "&cUsage: /pronouns get <username>"
+   noPermission: "&cYou don't have permission to use this command."
+   playerNotFound: "&cPlayer not found!"
+   invalidPronoun: "&cInvalid pronoun. Use /pronouns list to see available options."
+   notSet: "&7Not set"
+   pluginReloaded: "&aPronounsMC config reloaded."
+   pronounSet: "&aYour pronouns have been set to: &r{pronouns}"
+   availablePronounsHeader: "&aAvailable pronouns:"
+   playerPronounFormat: "&a{player}'s pronouns: &r{pronouns}"
+   playerPronounNone: "&a{player}'s pronouns: &bNot set" # Used for /pronouns get <username>
+   onlyPlayers: "&cOnly players can set pronouns."
 ```
 
 ---
