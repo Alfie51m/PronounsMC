@@ -1,7 +1,7 @@
 messages:
   usageMain: "&cUsage: /pronouns <command>"
   usageGet: "&cUsage: /pronouns get <username>"
-  noPermission: "&cYou don't have permission for that."
+  noPermission: "&cYou don't have permission to use this command."
   playerNotFound: "&cPlayer not found!"
   invalidPronoun: "&cInvalid pronoun. Use /pronouns list to see available options."
   noPronounsConfigured: "&cNo pronouns configured." # If config.yml contains no pronouns

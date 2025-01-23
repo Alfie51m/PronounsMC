@@ -1,0 +1,13 @@
+messages:
+  usageMain: "&c用法: /pronouns <命令>"
+  usageGet: "&c用法: /pronouns get <用户名>"
+  noPermission: "&c您没有权限使用此命令。"
+  playerNotFound: "&c未找到玩家！"
+  invalidPronoun: "&c无效的代词。使用 /pronouns list 查看可用选项。"
+  noPronounsConfigured: "&c未配置任何代词。" # 如果 config.yml 不包含代词
+  notSet: "&7未设置" # 使用 /pronouns get <用户名> 时显示
+  pluginReloaded: "&aPronounsMC 配置已重新加载。"
+  pronounSet: "&a您的代词已设置为: &r{pronouns}"
+  availablePronounsHeader: "&a可用代词:"
+  playerPronounFormat: "&a{player} 的代词: &r{pronouns}"
+  onlyPlayers: "&c只有玩家可以设置代词。"

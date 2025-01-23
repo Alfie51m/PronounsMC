@@ -134,37 +134,31 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
 
         switch (subCommand) {
             case "get": {
-                // /pronouns get <username>
 
                 if (args.length < 2) {
-                    sender.sendMessage(ChatColor.RED + "Usage: /pronouns get <username>");
+                    sender.sendMessage(color(getLang("messages.usageGet", "&cUsage: /pronouns get <username>")));
                     return true;
                 }
                 if (!sender.hasPermission("pronouns.get")) {
-                    sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+                    sender.sendMessage(color(getLang("messages.noPermission", "&cYou do not have permission to use this command")));
                     return true;
                 }
 
                 String targetName = args[1];
-                // Check if the player is online
                 Player onlineTarget = Bukkit.getPlayerExact(targetName);
                 UUID targetUUID;
 
                 if (onlineTarget != null) {
-                    // Found the player online
                     targetUUID = onlineTarget.getUniqueId();
                 } else {
-                    // Try to get offline player data
                     OfflinePlayer offlineTarget = Bukkit.getOfflinePlayer(targetName);
-                    // If the server doesn't recognize this name at all, or they've never joined
                     if (offlineTarget == null || !offlineTarget.hasPlayedBefore()) {
-                        sender.sendMessage(ChatColor.RED + "Player not found (offline).");
+                        sender.sendMessage(color(getLang("messages.playerNotFound", "&cPlayer not found!")));
                         return true;
                     }
                     targetUUID = offlineTarget.getUniqueId();
                 }
 
-                // Now fetch pronouns from DB using targetUUID
                 String storedKey = getPronouns(targetUUID.toString());
                 if (storedKey == null) {
                     sender.sendMessage(ChatColor.GREEN + targetName + "'s pronouns: "
@@ -194,7 +188,7 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
 
             case "reload": {
                 if (!sender.hasPermission("pronouns.reload")) {
-                    sender.sendMessage(color(getLang("messages.noPermission", "&cYou don't have permission.")));
+                    sender.sendMessage(color(getLang("messages.noPermission", "&cYou don't have permission to use this command.")));
                     return true;
                 }
 

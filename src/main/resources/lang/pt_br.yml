@@ -1,0 +1,13 @@
+messages:
+  usageMain: "&cUso: /pronouns <comando>"
+  usageGet: "&cUso: /pronouns get <nome do usuário>"
+  noPermission: "&cVocê não tem permissão para usar este comando."
+  playerNotFound: "&cJogador não encontrado!"
+  invalidPronoun: "&cPronome inválido. Use /pronouns list para ver as opções disponíveis."
+  noPronounsConfigured: "&cNenhum pronome configurado." # Se config.yml não contém pronomes
+  notSet: "&7Não definido" # Exibido ao usar /pronouns get <nome do usuário>
+  pluginReloaded: "&aConfiguração do PronounsMC recarregada."
+  pronounSet: "&aSeus pronomes foram definidos como: &r{pronouns}"
+  availablePronounsHeader: "&aPronomes disponíveis:"
+  playerPronounFormat: "&aPronomes de {player}: &r{pronouns}"
+  onlyPlayers: "&cApenas jogadores podem definir pronomes."
