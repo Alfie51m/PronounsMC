@@ -24,7 +24,7 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
         saveDefaultConfig();
         config = getConfig();
 
-        loadLangFile();
+        loadLangFiles();
 
         try {
             connectToDatabase();
@@ -59,17 +59,41 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
         }
     }
 
-    private void loadLangFile() {
+    private void loadLangFiles() {
         String langFileName = config.getString("langFile", "en_US");
         File langFolder = new File(getDataFolder(), "lang");
         if (!langFolder.exists()) {
             langFolder.mkdirs();
         }
-        File langFile = new File(langFolder, langFileName + ".yml");
 
+        try {
+            List<String> resourceLangFiles = List.of(
+                    "de_DE.yml",
+                    "en_US.yml",
+                    "es_ES.yml",
+                    "fr_FR.yml",
+                    "it_IT.yml",
+                    "ja_JP.yml",
+                    "pt_BR.yml",
+                    "uk_UA.yml",
+                    "zh_CN.yml"
+            );
+
+            for (String resourceLangFile : resourceLangFiles) {
+                File targetLangFile = new File(langFolder, resourceLangFile);
+                if (!targetLangFile.exists()) {
+                    saveResource("lang/" + resourceLangFile, false);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        File langFile = new File(langFolder, langFileName + ".yml");
         if (!langFile.exists()) {
             saveResource("lang/" + langFileName + ".yml", false);
         }
+
         langConfig = YamlConfiguration.loadConfiguration(langFile);
     }
 
@@ -161,19 +185,22 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
 
                 String storedKey = getPronouns(targetUUID.toString());
                 if (storedKey == null) {
-                    sender.sendMessage(ChatColor.GREEN + targetName + "'s pronouns: "
-                            + ChatColor.AQUA + "Not set");
+                    String msgTemplate = getLang("messages.playerPronounNone", "&a{player}'s pronouns: &bNot set");
+                    msgTemplate = msgTemplate.replace("{player}", targetName);
+                    sender.sendMessage(color(msgTemplate));
                 } else {
                     String colorized = getColoredPronoun(storedKey);
-                    sender.sendMessage(ChatColor.GREEN + targetName + "'s pronouns: "
-                            + ChatColor.RESET + colorized);
+                    String msgTemplate = getLang("messages.playerPronounFormat", "&a{player}'s pronouns: &r{pronouns}");
+                    msgTemplate = msgTemplate.replace("{player}", targetName);
+                    msgTemplate = msgTemplate.replace("{pronouns}", colorized);
+                    sender.sendMessage(color(msgTemplate));
                 }
                 return true;
             }
 
             case "list": {
                 if (!config.isConfigurationSection("availablePronouns")) {
-                    sender.sendMessage(color(getLang("messages.noPronounsConfigured", "&cNo pronouns configured.")));
+                    sender.sendMessage(color("&cNo pronouns configured."));
                     return true;
                 }
                 sender.sendMessage(color(getLang("messages.availablePronounsHeader", "&aAvailable pronouns:")));
@@ -195,7 +222,7 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
                 reloadConfig();
                 config = getConfig();
 
-                loadLangFile();
+                loadLangFiles();
 
                 sender.sendMessage(color(getLang("messages.pluginReloaded", "&aPronounsMC config reloaded.")));
                 return true;
@@ -243,8 +270,7 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
                 subCommands.addAll(config.getConfigurationSection("availablePronouns").getKeys(false));
             }
             return subCommands;
-        }
-        else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("get")) {
             String partial = args[1].toLowerCase();
 
             List<String> completions = new ArrayList<>();
@@ -309,9 +335,11 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
 
     public String getColoredPronoun(String rawKey) {
         String path = "availablePronouns." + rawKey;
-        if (!config.isString(path)) {
-            return color(getLang("messages.notSet", "&7Not set"));
+
+        if (config.isString(path)) {
+            return color(config.getString(path));
         }
-        return color(config.getString(path, "&7Not set"));
+
+        return color(color(getLang("messages.notSet", "&7Not set")));
     }
 }

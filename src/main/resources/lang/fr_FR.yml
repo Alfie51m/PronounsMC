@@ -4,10 +4,10 @@ messages:
   noPermission: "&cVous n'avez pas la permission d'utiliser cette commande."
   playerNotFound: "&cJoueur introuvable !"
   invalidPronoun: "&cPronom invalide. Utilisez /pronouns list pour voir les options disponibles."
-  noPronounsConfigured: "&cAucun pronom configuré." # Si config.yml ne contient pas de pronoms
-  notSet: "&7Non défini" # S'affiche avec /pronouns get <nom d'utilisateur>
+  notSet: "&7Non défini"
   pluginReloaded: "&aConfiguration de PronounsMC rechargée."
   pronounSet: "&aVos pronoms ont été définis sur : &r{pronouns}"
   availablePronounsHeader: "&aPronoms disponibles :"
   playerPronounFormat: "&aPronoms de {player} : &r{pronouns}"
+  playerPronounNone: "&aPronoms de {player} : &bNon défini"
   onlyPlayers: "&cSeuls les joueurs peuvent définir des pronoms."

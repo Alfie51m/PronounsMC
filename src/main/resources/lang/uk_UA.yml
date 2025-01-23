@@ -1,0 +1,13 @@
+messages:
+  usageMain: "&cВикористання: /pronouns <команда>"
+  usageGet: "&cВикористання: /pronouns get <ім'я користувача>"
+  noPermission: "&cВи не маєте дозволу використовувати цю команду."
+  playerNotFound: "&cГравця не знайдено!"
+  invalidPronoun: "&cНедійсний займенник. Використовуйте /pronouns list, щоб переглянути доступні варіанти."
+  notSet: "&7Не встановлено"
+  pluginReloaded: "&aКонфігурацію PronounsMC перезавантажено."
+  pronounSet: "&aВаші займенники були встановлені як: &r{pronouns}"
+  availablePronounsHeader: "&aДоступні займенники:"
+  playerPronounFormat: "&aЗайменники {player}: &r{pronouns}"
+  playerPronounNone: "&aЗайменники {player}: &bНе встановлено"
+  onlyPlayers: "&cТільки гравці можуть встановлювати займенники."

@@ -1,0 +1,13 @@
+messages:
+  usageMain: "&c使用方法: /pronouns <コマンド>"
+  usageGet: "&c使用方法: /pronouns get <ユーザー名>"
+  noPermission: "&cこのコマンドを使用する権限がありません。"
+  playerNotFound: "&cプレイヤーが見つかりません！"
+  invalidPronoun: "&c無効な代名詞です。使用可能なオプションを見るには /pronouns list を使ってください。"
+  notSet: "&7未設定"
+  pluginReloaded: "&aPronounsMCの設定がリロードされました。"
+  pronounSet: "&aあなたの代名詞が設定されました: &r{pronouns}"
+  availablePronounsHeader: "&a利用可能な代名詞:"
+  playerPronounFormat: "&a{player}の代名詞: &r{pronouns}"
+  playerPronounNone: "&a{player}の代名詞: &b未設定"
+  onlyPlayers: "&c代名詞を設定できるのはプレイヤーのみです。"

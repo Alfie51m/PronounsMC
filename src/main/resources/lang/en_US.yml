@@ -4,10 +4,10 @@ messages:
   noPermission: "&cYou don't have permission to use this command."
   playerNotFound: "&cPlayer not found!"
   invalidPronoun: "&cInvalid pronoun. Use /pronouns list to see available options."
-  noPronounsConfigured: "&cNo pronouns configured." # If config.yml contains no pronouns
-  notSet: "&7Not set" # This is displayed when using /pronouns get <username>
+  notSet: "&7Not set"
   pluginReloaded: "&aPronounsMC config reloaded."
   pronounSet: "&aYour pronouns have been set to: &r{pronouns}"
   availablePronounsHeader: "&aAvailable pronouns:"
   playerPronounFormat: "&a{player}'s pronouns: &r{pronouns}"
+  playerPronounNone: "&a{player}'s pronouns: &bNot set" # Used for /pronouns get <username>
   onlyPlayers: "&cOnly players can set pronouns."
