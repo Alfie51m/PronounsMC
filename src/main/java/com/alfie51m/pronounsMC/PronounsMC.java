@@ -234,7 +234,7 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
                     return true;
                 }
                 String chosenPronoun = subCommand;
-                if (!config.contains("availablePronouns." + chosenPronoun)) {
+                if (!(config.getBoolean("userSuppliedPronouns", false) || config.contains("availablePronouns." + chosenPronoun))) {
                     sender.sendMessage(color(getLang("messages.invalidPronoun",
                             "&cInvalid pronoun. Use /pronouns list to see available options.")));
                     return true;
@@ -339,7 +339,10 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
         if (config.isString(path)) {
             return color(config.getString(path));
         }
+        else {
+            return color(String.format(config.getString("defaultProunounTemplate"), rawKey));
+        }
 
-        return color(color(getLang("messages.notSet", "&7Not set")));
+        // return color(color(getLang("messages.notSet", "&7Not set")));
     }
 }

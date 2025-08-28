@@ -8,6 +8,9 @@ database:
   user: root
   password: "password"
 
+userSuppliedPronouns: false
+defaultProunounTemplate: "&6(%s)&r"
+
 availablePronouns:
   he/him: "&3(&bHe&3/&bHim&3)&r"
   she/her: "&5(&dShe&5/&dHer&5)&r"
