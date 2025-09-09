@@ -47,22 +47,26 @@ Colour formatting can be used in pronouns as shown below, this is optional.
 langFile: "en_US"
 
 database:
-  type: sqlite # Use either 'mysql' or 'sqlite'
-  host: localhost
-  port: 3306
-  name: minecraft
-  user: root
-  password: password
+   type: sqlite # Use either 'mysql' or 'sqlite'
+   host: localhost
+   port: 3306
+   name: minecraft
+   user: root
+   password: "password"
+
+userSuppliedPronouns: false
+defaultProunounTemplate: "&7(%s)&r"
 
 availablePronouns:
-  he/him: "&3(&bHe&3/&bHim&3)&r"
-  she/her: "&5(&dShe&5/&dHer&5)&r"
-  they/them: "&2(&aThey&2/&aThem&2)&r"
-  it/its: "&8(&7It&8/&7Its&8)&r"
-  he/they: "&3(&bHe&3/&bThey&3)&r"
-  she/they: "&4(&cShe&4/&cThey&4)&r"
-  xe/xem: "&8(&7Xe&8/&7Xem&8)&r"
-  ze/zir: "&8(&7Ze&8/&7Zir&8)&r"
+   he/him: "&3(&bHe&3/&bHim&3)&r"
+   she/her: "&5(&dShe&5/&dHer&5)&r"
+   they/them: "&2(&aThey&2/&aThem&2)&r"
+   it/its: "&8(&7It&8/&7Its&8)&r"
+   he/they: "&3(&bHe&3/&bThey&3)&r"
+   she/they: "&4(&cShe&4/&cThey&4)&r"
+   xe/xem: "&8(&7Xe&8/&7Xem&8)&r"
+   ze/zir: "&8(&7Ze&8/&7Zir&8)&r"
+
 ```
 
 ### `lang/en_US.yml`
