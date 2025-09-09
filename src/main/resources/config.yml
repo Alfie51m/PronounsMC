@@ -9,7 +9,7 @@ database:
   password: "password"
 
 userSuppliedPronouns: false
-defaultProunounTemplate: "&6(%s)&r"
+defaultProunounTemplate: "&7(%s)&r"
 
 availablePronouns:
   he/him: "&3(&bHe&3/&bHim&3)&r"
