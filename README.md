@@ -93,12 +93,13 @@ messages:
 
 ## Commands
 
-| Command                | Description                                | Permission          |
-|------------------------|--------------------------------------------|---------------------|
-| `/pronouns <pronoun>`  | Sets your pronouns to the specified key.   | None                |
-| `/pronouns get <name>` | Displays the pronouns of another player.   | `pronouns.get`      |
-| `/pronouns list`       | Lists all available pronouns.              | None                |
-| `/pronouns reload`     | Reloads the configuration and language.    | `pronouns.reload`   |
+| Command                 | Description                                | Permission          |
+|-------------------------|--------------------------------------------|---------------------|
+| `/pronouns reset`       | Resets previously set pronouns by user     | None                |  
+| `/pronouns <pronoun>`   | Sets your pronouns to the specified key.   | None                |
+| `/pronouns get <name>`  | Displays the pronouns of another player.   | `pronouns.get`      |
+| `/pronouns list`        | Lists all available pronouns.              | None                |
+| `/pronouns reload`      | Reloads the configuration and language.    | `pronouns.reload`   |
 
 ---
 
