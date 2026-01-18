@@ -157,6 +157,25 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
         String subCommand = args[0].toLowerCase();
 
         switch (subCommand) {
+            case "reset": {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(color(getLang("messages.onlyPlayers", "&cOnly players can reset pronouns.")));
+                    return true;
+                }
+
+                if (!sender.hasPermission("pronouns.reset")) {
+                    sender.sendMessage(color(getLang("messages.noPermission", "&cYou do not have permission to use this command.")));
+                    return true;
+                }
+
+                Player player = (Player) sender;
+                resetPronouns(player.getUniqueId().toString());
+
+                sender.sendMessage(color(
+                        getLang("messages.pronounReset", "&aYour pronouns have been reset.")
+                ));
+                return true;
+            }
             case "get": {
 
                 if (args.length < 2) {
@@ -260,6 +279,7 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
         if (args.length == 1) {
             List<String> subCommands = new ArrayList<>();
             subCommands.add("list");
+            subCommands.add("reset");
             if (sender.hasPermission("pronouns.get")) {
                 subCommands.add("get");
             }
@@ -297,6 +317,17 @@ public class PronounsMC extends JavaPlugin implements TabExecutor {
             getLogger().warning("Failed to fetch pronouns: " + e.getMessage());
         }
         return null;
+    }
+
+    public void resetPronouns(String uuid) {
+        String query = "DELETE FROM pronouns WHERE uuid = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, uuid);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            getLogger().warning("Failed to reset pronouns: " + e.getMessage());
+        }
     }
 
     public void setPronouns(String uuid, String pronoun) {
