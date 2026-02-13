@@ -1,5 +1,6 @@
 messages:
   usageMain: "&cВикористання: /pronouns <команда>"
+  usageSet: "&cВикористання: /pronouns set <займенник>"
   usageGet: "&cВикористання: /pronouns get <ім'я користувача>"
   noPermission: "&cВи не маєте дозволу використовувати цю команду."
   playerNotFound: "&cГравця не знайдено!"
@@ -11,3 +12,5 @@ messages:
   playerPronounFormat: "&aЗайменники {player}: &r{pronouns}"
   playerPronounNone: "&aЗайменники {player}: &bНе встановлено"
   onlyPlayers: "&cТільки гравці можуть встановлювати займенники."
+  availablePronounsFooter: "&9Ви також можете встановити власні займенники за допомогою /pronouns set <pronoun>"
+  pronounResetTarget: "&aЗайменники {player} були скинуті."

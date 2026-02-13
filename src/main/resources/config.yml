@@ -8,7 +8,7 @@ database:
   user: root
   password: "password"
 
-userSuppliedPronouns: false
+userSuppliedPronouns: false # This setting can be abused by players.
 defaultProunounTemplate: "&7(%s)&r"
 
 availablePronouns:

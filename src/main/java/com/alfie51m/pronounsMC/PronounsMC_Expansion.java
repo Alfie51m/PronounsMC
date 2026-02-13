@@ -14,16 +14,14 @@ public class PronounsMC_Expansion extends PlaceholderExpansion {
 
     @Override
     public String getIdentifier() {
-        return "pronouns";
+        return "Pronouns";
     }
 
     @Override
-    public String getAuthor() {
-        return "Alfie51m";
-    }
+    public String getAuthor() { return "Alfie51m"; }
 
     @Override
-    public String getVersion() { return "1.2.0"; }
+    public String getVersion() { return plugin.getDescription().getVersion(); }
 
     @Override
     public boolean persist() {
@@ -32,7 +30,7 @@ public class PronounsMC_Expansion extends PlaceholderExpansion {
 
     @Override
     public boolean canRegister() {
-        return (Bukkit.getPluginManager().getPlugin("PronounsMC") != null);
+        return Bukkit.getPluginManager().getPlugin("PronounsMC") != null;
     }
 
     @Override
@@ -41,17 +39,17 @@ public class PronounsMC_Expansion extends PlaceholderExpansion {
             return "";
         }
 
-        PronounsMC plugin = (PronounsMC) Bukkit.getPluginManager().getPlugin("PronounsMC");
-        if (plugin == null) {
+        PronounsMC pluginInstance = (PronounsMC) Bukkit.getPluginManager().getPlugin("PronounsMC");
+        if (pluginInstance == null) {
             return "";
         }
 
         if (identifier.isEmpty()) {
-            String rawKey = plugin.getPronouns(player.getUniqueId().toString());
+            String rawKey = pluginInstance.getDatabase().getPronouns(player.getUniqueId().toString());
             if (rawKey == null) {
                 return "";
             }
-            return plugin.getColoredPronoun(rawKey);
+            return pluginInstance.getColoredPronoun(rawKey);
         }
 
         return null;

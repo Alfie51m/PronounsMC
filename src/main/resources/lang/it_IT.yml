@@ -1,5 +1,6 @@
 messages:
   usageMain: "&cUso: /pronouns <comando>"
+  usageSet: "&cUso: /pronouns set <pronome>"
   usageGet: "&cUso: /pronouns get <nome utente>"
   noPermission: "&cNon hai il permesso di usare questo comando."
   playerNotFound: "&cGiocatore non trovato!"
@@ -11,3 +12,5 @@ messages:
   playerPronounFormat: "&aPronomi di {player}: &r{pronouns}"
   playerPronounNone: "&aPronomi di {player}: &bNon impostato"
   onlyPlayers: "&cSolo i giocatori possono impostare i pronomi."
+  availablePronounsFooter: "&9Puoi anche impostare i tuoi pronomi con /pronouns set <pronoun>"
+  pronounResetTarget: "&aI pronomi di {player} sono stati resettati."

@@ -5,7 +5,7 @@
 ## Notes
 
 - PlaceholderAPI is required for placeholders.
-- We reccomend using a plugin like [ChatInjector](https://www.spigotmc.org/resources/chatinjector-1-13.81201/) for use with plugins that **don't** support PlaceholderAPI like EssentialsX Chat.
+- We reccomend using a plugin like [ChatInjector](https://www.spigotmc.org/resources/chatinjector-1-20.81201/) for use with plugins that **don't** support PlaceholderAPI like EssentialsX Chat.
 
 ## Features
 
@@ -25,7 +25,7 @@
     - **Database type**: Choose between `mysql` or `sqlite`.
     - **Available pronouns**: Customize the list of pronouns and their color-coded formats.
     - **Language file**: Specify the language file (default: `en_US`).
-4. **Restart your server** or use `/pronouns reload` to apply changes.
+4. **Restart your server** or use `/pronouns reload` to apply changes. *(Does not work for database changes)*
 
 ---
 
@@ -54,7 +54,7 @@ database:
    user: root
    password: "password"
 
-userSuppliedPronouns: false
+userSuppliedPronouns: false # This setting can be abused by players.
 defaultProunounTemplate: "&7(%s)&r"
 
 availablePronouns:
@@ -66,7 +66,6 @@ availablePronouns:
    she/they: "&4(&cShe&4/&cThey&4)&r"
    xe/xem: "&8(&7Xe&8/&7Xem&8)&r"
    ze/zir: "&8(&7Ze&8/&7Zir&8)&r"
-
 ```
 
 ### `lang/en_US.yml`
@@ -76,6 +75,7 @@ All user-facing messages are customizable in the language file. Example:
 ```yaml
 messages:
    usageMain: "&cUsage: /pronouns <command>"
+   usageSet: "&cUsage: /pronouns set <pronoun>"
    usageGet: "&cUsage: /pronouns get <username>"
    noPermission: "&cYou don't have permission to use this command."
    playerNotFound: "&cPlayer not found!"
@@ -87,28 +87,33 @@ messages:
    playerPronounFormat: "&a{player}'s pronouns: &r{pronouns}"
    playerPronounNone: "&a{player}'s pronouns: &bNot set" # Used for /pronouns get <username>
    onlyPlayers: "&cOnly players can set pronouns."
+   availablePronounsFooter: "&9You can also set your own pronouns using /pronouns set <pronoun>"
+   pronounResetTarget: "&aReset pronouns for {player}."
 ```
 
 ---
 
 ## Commands
 
-| Command                 | Description                                | Permission          |
-|-------------------------|--------------------------------------------|---------------------|
-| `/pronouns reset`       | Resets previously set pronouns by user     | None                |  
-| `/pronouns <pronoun>`   | Sets your pronouns to the specified key.   | None                |
-| `/pronouns get <name>`  | Displays the pronouns of another player.   | `pronouns.get`      |
-| `/pronouns list`        | Lists all available pronouns.              | None                |
-| `/pronouns reload`      | Reloads the configuration and language.    | `pronouns.reload`   |
+| Command                   | Description                                  | Permission        |
+|---------------------------|----------------------------------------------|-------------------|
+| `/pronouns set <pronoun>` | Sets your pronouns to the specified pronoun. | None              |  
+| `/pronouns reset`         | Resets previously set pronouns by user       | None              |  
+| `/pronouns reset <user>`  | Resets other users pronouns                  | `pronouns.admin`  |  
+| `/pronouns get <user>`    | Displays the pronouns of another player.     | `pronouns.get`    |
+| `/pronouns list`          | Lists all available pronouns.                | None              |
+| `/pronouns reload`        | Reloads the configuration and language.      | `pronouns.reload` |
 
 ---
 
 ## Permissions
 
-| Permission          | Description                              | Default |
-|---------------------|------------------------------------------|---------|
-| `pronouns.get`      | Allows retrieving another player's pronouns. | OP      |
-| `pronouns.reload`   | Allows reloading the configuration and language. | OP      |
+| Permission        | Description                                      | Default |
+|-------------------|--------------------------------------------------|---------|
+| `pronouns.get`    | Allows retrieving another player's pronouns.     | OP      |
+| `pronouns.reload` | Allows reloading the configuration and language. | OP      |
+| `pronouns.admin`  | Allows resetting other users pronouns.           | OP      |
+
 
 ---
 

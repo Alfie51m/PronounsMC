@@ -1,5 +1,6 @@
 messages:
   usageMain: "&c用法: /pronouns <命令>"
+  usageSet: "&c用法: /pronouns set <代词>"
   usageGet: "&c用法: /pronouns get <用户名>"
   noPermission: "&c您没有权限使用此命令。"
   playerNotFound: "&c未找到玩家！"
@@ -11,3 +12,5 @@ messages:
   playerPronounFormat: "&a{player} 的代词: &r{pronouns}"
   playerPronounNone: "&a{player} 的代词: &b未设置"
   onlyPlayers: "&c只有玩家可以设置代词。"
+  availablePronounsFooter: "&9你也可以使用 /pronouns set <pronoun> 设置自己的代词"
+  pronounResetTarget: "&a已重置 {player} 的代词。"

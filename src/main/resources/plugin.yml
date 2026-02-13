@@ -15,3 +15,6 @@ permissions:
   pronouns.reload:
     description: Permission to reload the plugin config.
     default: op
+  pronouns.admin:
+    description: Permission to reset others pronouns with /pronouns reset <user>.
+    default: op

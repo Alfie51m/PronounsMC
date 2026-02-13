@@ -1,5 +1,6 @@
 messages:
   usageMain: "&c使用方法: /pronouns <コマンド>"
+  usageSet: "&c使い方: /pronouns set <代名詞>"
   usageGet: "&c使用方法: /pronouns get <ユーザー名>"
   noPermission: "&cこのコマンドを使用する権限がありません。"
   playerNotFound: "&cプレイヤーが見つかりません！"
@@ -11,3 +12,5 @@ messages:
   playerPronounFormat: "&a{player}の代名詞: &r{pronouns}"
   playerPronounNone: "&a{player}の代名詞: &b未設定"
   onlyPlayers: "&c代名詞を設定できるのはプレイヤーのみです。"
+  availablePronounsFooter: "&9/pronouns set <pronoun> で自分の代名詞を設定することもできます"
+  pronounResetTarget: "&a{player} の代名詞をリセットしました。"
