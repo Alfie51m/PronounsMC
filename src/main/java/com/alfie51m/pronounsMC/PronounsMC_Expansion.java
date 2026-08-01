@@ -44,7 +44,7 @@ public class PronounsMC_Expansion extends PlaceholderExpansion {
             return "";
         }
 
-        if (identifier.isEmpty()) {
+        if (identifier.equalsIgnoreCase("user")) {
             String rawKey = pluginInstance.getDatabase().getPronouns(player.getUniqueId().toString());
             if (rawKey == null) {
                 return "";

@@ -31,9 +31,9 @@
 
 ## Placeholders
 
-| Placeholder            | Description                                |
-|------------------------|--------------------------------------------|
-| `%pronouns%`           | Displays users pronouns. Works with PlaceholderAPI   |
+| Placeholder       | Description                                |
+|-------------------|--------------------------------------------|
+| `%pronouns_user%` | Displays users pronouns. Works with PlaceholderAPI   |
 
 ---
 

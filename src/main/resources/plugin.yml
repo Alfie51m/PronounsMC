@@ -1,7 +1,7 @@
 name: PronounsMC
 version: ${version}
 main: com.alfie51m.pronounsMC.PronounsMC
-api-version: 1.21
+api-version: 26.2
 softdepend: [PlaceholderAPI]
 commands:
   pronouns:
